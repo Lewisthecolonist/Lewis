@@ -1,0 +1,98 @@
+2025-01-30 00:31:43,626 - root - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:31:43,627 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:31:43,829 - root - ERROR - Strategy generation failed for TimeFrame.MID_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:31:43,830 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.MID_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:31:43,985 - root - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:31:43,985 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:31:44,176 - root - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:31:44,176 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:31:44,179 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 00:31:44,258 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 00:31:44,259 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 00:51:58,164 - root - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:51:58,165 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:51:58,315 - root - ERROR - Strategy generation failed for TimeFrame.MID_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:51:58,316 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.MID_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:51:58,471 - root - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:51:58,472 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:51:58,665 - root - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: 'StrategyGenerator' object has no attribute '_create_trend_following_strategy'
+2025-01-30 00:51:58,666 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:51:58,669 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 00:51:58,746 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 00:51:58,747 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 00:59:49,617 - root - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: StrategyGenerator._validate_strategy_parameters() missing 1 required positional argument: 'parameters'
+2025-01-30 00:59:49,618 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:59:49,784 - root - ERROR - Strategy generation failed for TimeFrame.MID_TERM: StrategyGenerator._validate_strategy_parameters() missing 1 required positional argument: 'parameters'
+2025-01-30 00:59:49,785 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.MID_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:59:50,032 - root - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: StrategyGenerator._validate_strategy_parameters() missing 1 required positional argument: 'parameters'
+2025-01-30 00:59:50,033 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:59:50,265 - root - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: StrategyGenerator._validate_strategy_parameters() missing 1 required positional argument: 'parameters'
+2025-01-30 00:59:50,266 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: 'StrategyGenerator' object has no attribute 'create_default_strategy'
+2025-01-30 00:59:50,268 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 00:59:50,347 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 00:59:50,347 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 01:02:51,060 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SHORT_TERM: object list can't be used in 'await' expression
+2025-01-30 01:02:51,218 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.MID_TERM: object list can't be used in 'await' expression
+2025-01-30 01:02:51,373 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.LONG_TERM: object list can't be used in 'await' expression
+2025-01-30 01:02:51,574 - strategy_generator - ERROR - Strategy generation failed for TimeFrame.SEASONAL_TERM: object list can't be used in 'await' expression
+2025-01-30 01:02:51,577 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 01:02:51,654 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 01:02:51,654 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 01:08:12,812 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 01:08:12,887 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 01:08:12,888 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'create_market_event'
+2025-01-30 01:10:10,484 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 01:10:10,569 - root - ERROR - System startup failed: Backtester.create_market_event() missing 1 required positional argument: 'volume'
+2025-01-30 01:10:10,570 - __main__ - ERROR - Fatal error: Backtester.create_market_event() missing 1 required positional argument: 'volume'
+2025-01-30 01:12:45,898 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 01:12:45,975 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'process_event'
+2025-01-30 01:12:45,975 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'process_event'
+2025-01-30 01:18:37,565 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-30 01:18:37,643 - root - ERROR - System startup failed: 'dict' object has no attribute 'type'
+2025-01-30 01:18:37,643 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'type'
+2025-01-31 00:13:40,637 - root - ERROR - System startup failed: MarketMaker.initialize() missing 1 required positional argument: 'market_data'
+2025-01-31 00:13:40,640 - __main__ - ERROR - Fatal error: MarketMaker.initialize() missing 1 required positional argument: 'market_data'
+2025-01-31 00:16:32,071 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 00:16:32,159 - root - ERROR - System startup failed: 'dict' object has no attribute 'type'
+2025-01-31 00:16:32,159 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'type'
+2025-01-31 00:44:20,169 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 00:44:20,248 - root - ERROR - System startup failed: 'Backtester' object has no attribute 'get_recent_data'
+2025-01-31 00:44:20,248 - __main__ - ERROR - Fatal error: 'Backtester' object has no attribute 'get_recent_data'
+2025-01-31 00:46:55,890 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 00:46:55,967 - root - ERROR - System startup failed: 'dict' object has no attribute 'timestamp'
+2025-01-31 00:46:55,967 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'timestamp'
+2025-01-31 00:49:18,843 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 00:49:18,921 - root - ERROR - System startup failed: 'dict' object has no attribute 'timestamp'
+2025-01-31 00:49:18,921 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'timestamp'
+2025-01-31 00:54:01,371 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 00:54:01,448 - root - ERROR - System startup failed: 'Timestamp' object is not subscriptable
+2025-01-31 00:54:01,449 - __main__ - ERROR - Fatal error: 'Timestamp' object is not subscriptable
+2025-01-31 01:00:26,098 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:00:26,177 - root - ERROR - System startup failed: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:00:26,178 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:04:52,096 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:04:52,172 - root - ERROR - System startup failed: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:04:52,173 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:15:20,985 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:15:21,062 - root - ERROR - System startup failed: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:15:21,062 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:20:56,596 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:20:56,693 - root - ERROR - System startup failed: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:20:56,693 - __main__ - ERROR - Fatal error: 'dict' object has no attribute 'timestamp'
+2025-01-31 01:35:45,982 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:35:46,062 - root - ERROR - System startup failed: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 01:35:46,063 - __main__ - ERROR - Fatal error: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 01:39:35,261 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:39:35,342 - root - ERROR - System startup failed: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 01:39:35,343 - __main__ - ERROR - Fatal error: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 01:45:33,352 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 01:45:33,459 - root - ERROR - System startup failed: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 01:45:33,460 - __main__ - ERROR - Fatal error: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 02:00:01,652 - strategy_manager - INFO - Strategies initialized successfully
+2025-01-31 02:00:01,732 - root - ERROR - System startup failed: 'TimeFrame' object has no attribute 'generate_signal'
+2025-01-31 02:00:01,733 - __main__ - ERROR - Fatal error: 'TimeFrame' object has no attribute 'generate_signal'
+2025-02-03 01:13:35,540 - matplotlib.font_manager - INFO - generated new fontManager
+2025-02-03 01:13:35,964 - prophet.plot - ERROR - Importing plotly failed. Interactive plots will not work.
+2025-02-03 01:51:38,522 - strategy_manager - INFO - Strategies initialized successfully
+2025-02-03 01:51:38,618 - root - ERROR - System startup failed: 'TimeFrame' object has no attribute 'generate_signal'
+2025-02-03 01:51:38,619 - __main__ - ERROR - Fatal error: 'TimeFrame' object has no attribute 'generate_signal'
