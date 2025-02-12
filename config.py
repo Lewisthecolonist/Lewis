@@ -82,6 +82,9 @@ class Config:
             'RISK_FREE_RATE': 0.02,  # 2% annual risk-free rate for Sharpe ratio calculation
             'MAX_DRAWDOWN_THRESHOLD': 0.2,  # 20% maximum allowable drawdown
             'LEVERAGE': 1,  # 1 means no leverage, 2 means 2x leverage, etc.
+            'MAX_CONCURRENT_BACKTESTERS': 4,  # Adjust based on system capacity
+            'MAX_CONCURRENT_STRATEGIES': 1,    # Limit parallel strategy testing
+            'PROGRESS_UPDATE_INTERVAL': 1000    # Update progress every N events
         }
         
         self.ADAPTIVE_PARAMS = {

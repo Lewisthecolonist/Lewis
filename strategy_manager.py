@@ -101,7 +101,7 @@ class StrategyManager:
     
         # Add proper timeframe mapping
         self.timeframe_mapping = {
-            TimeFrame.SHORT_TERM: min,   # Minutes
+            TimeFrame.SHORT_TERM: 'min',   # Minutes
             TimeFrame.MID_TERM: 'D',       # Daily
             TimeFrame.LONG_TERM: 'ME',      # Monthly
             TimeFrame.SEASONAL_TERM: 'A'    # Annual
@@ -114,24 +114,39 @@ class StrategyManager:
                 self.strategies = {tf: [] for tf in TimeFrame}
         
                 # Generate strategies
-                generated = await strategy_generator.generate_strategies(market_data)
+                initial_strategies = await self.strategy_generator.generate_initial_strategies(market_data)
         
-                # Process each timeframe with list storage
-                for time_frame in TimeFrame:
-                    if time_frame in generated:
-                        strategy_list = generated[time_frame]
-                        self.strategies[time_frame] = strategy_list
-                
-                        # Find best performing strategy
-                        if strategy_list:
-                            best_strat = max(strategy_list, key=lambda s: getattr(s, 'performance', {}).get('total_return', 0))
-                            self.active_strategies[time_frame] = best_strat
+                # Save to strategy factory config
+                for timeframe, strategies in initial_strategies.items():
+                    for strategy in strategies:
+                        await self.strategy_factory.save_strategy(strategy)
+                        self.strategies[timeframe][strategy.name] = strategy
         
                 self.logger.info("Strategies initialized successfully")
         
             except Exception as e:
                 self.logger.error(f"Error initializing strategies: {str(e)}")
                 self.strategies = {tf: [] for tf in TimeFrame}
+
+    async def request_new_strategy(self, timeframe, market_conditions, is_backtesting=False):
+        # Create single strategy for specific timeframe and conditions
+        if is_backtesting:
+            strategy = await self.strategy_generator.create_targeted_strategy(
+                timeframe, 
+                market_conditions
+            )
+        else:
+            # For live trading, optimize before deployment
+            strategy = await self.strategy_generator.create_targeted_strategy(
+                timeframe, 
+                market_conditions
+            )
+            strategy = await self.strategy_optimizer.optimize_strategy(strategy)
+            
+        await self.strategy_factory.save_strategy(strategy)
+        self.strategies[timeframe][strategy.name] = strategy
+        self.current_strategies[timeframe] = strategy
+        return strategy
 
     def add_strategy(self, strategy: Strategy):
         try:

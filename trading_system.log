@@ -1,0 +1,35 @@
+Strategy Creation Phase:
+Generate diverse strategies for each timeframe
+Initialize with different parameter combinations
+Create baseline performance metrics
+Testing Phase:
+Run strategies through historical data
+Monitor market conditions and strategy performance
+Dynamically create new strategies when market gaps identified
+Track parameter impact on trading decisions
+Optimization Phase:
+Analyze failed trades and scenarios
+Adjust parameters based on performance data
+Optimize both selected and non-selected strategies
+Fine-tune parameters for specific market conditions
+Parameter Impact Analysis:
+Track how parameter changes affect:
+Entry/exit timing
+Position sizing
+Risk management
+Overall returns
+
+Strategy gap issue:
+use if backtesing is running or if you are selecting a short term strategy for live trading you have a different ai model check if 
+there is a market missmatch between the selected strategy and the market.
+if not tell it to respond with no and set the strategy if yes then make everything else a list of issues to then send as additional
+propmt data for the strategy generator method create targeted strategy. Then set it as the current one. Make sure the the seletor
+gets the rest of the market data as well to create the new strategy.
+
+AI NFT and memecoin:
+Make sure it looks at the most popular and expensive one and see if there is a certain sentiment to it like most of the popular ones
+have pandas or such. Make sure it is connecting to a memecoin aggregator for large amoutns of data to find sentiment
+Also if certain people or other things are mentioned in the description or title as that could also be a sign of a good one.
+Connect it to twitter, reddit and other social media to see what people are saying about it and what they think about it.
+Also use the socials to find certain sentiments about certain things and use that to see what is currently popular and what is not.
+Also use it to find certain changes in certain memcoins like it partners with something or someone as that could cause a rise in price.

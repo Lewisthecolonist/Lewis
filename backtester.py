@@ -29,13 +29,14 @@ from market_simulator import MarketSimulator
 historical_data = pd.read_csv('historical_data.csv.zip')
 from strategy import TimeFrame
 from strategy import (TrendFollowingStrategy, MeanReversionStrategy, MomentumStrategy, 
-                      VolatilityStrategy, PatternRecognitionStrategy, StatisticalArbitrageStrategy, 
-                      SentimentAnalysisStrategy)
+                      VolatilityStrategy, StatisticalArbitrageStrategy, 
+                      SentimentAnalysisStrategy, BreakoutStrategy)
 from api_call_manager import APICallManager
 from strategy_manager import StrategyManager
 import tracemalloc
 tracemalloc.start()
 import asyncio
+import re
 
 class TransactionCostModel:
     def __init__(self, config):
@@ -190,7 +191,9 @@ class BacktestReport:
 class Backtester(multiprocessing.Process):  # or threading.Thread
     def __init__(self, config, historical_data: pd.DataFrame, result_queue):
         super().__init__()
-        
+        self.max_concurrent_backtesters = config.BASE_PARAMS.get('MAX_CONCURRENT_BACKTESTERS')
+        self.max_concurrent_strategies = config.BASE_PARAMS.get('MAX_CONCURRENT_STRATEGIES')
+        self.progress_update_interval = config.BASE_PARAMS.get('PROGRESS_UPDATE_INTERVAL')  
         # Validate input data
         if historical_data.empty:
             raise ValueError("Historical data is empty")
@@ -235,7 +238,7 @@ class Backtester(multiprocessing.Process):  # or threading.Thread
             MeanReversionStrategy,
             MomentumStrategy,
             VolatilityStrategy,
-            PatternRecognitionStrategy,
+            BreakoutStrategy,
             StatisticalArbitrageStrategy,
             SentimentAnalysisStrategy,
         ]
@@ -253,15 +256,20 @@ class Backtester(multiprocessing.Process):  # or threading.Thread
         self.strategy_manager = StrategyManager(config, use_ai_selection=False)
         self.current_strategy = None
         self.asyncio = asyncio
+        # Progress tracking
+        self.total_events = len(historical_data)
+        self.processed_events = 0
 
     async def run(self):
-        """Async implementation of backtester run method"""
         try:
-            # Initialize backtesting components
             await self.initialize()
             
-            # Process historical data
             for timestamp, data in self.historical_data.iterrows():
+                self.processed_events += 1
+                if self.processed_events % self.progress_update_interval == 0:
+                    progress = (self.processed_events / self.total_events) * 100
+                    print(f"Backtesting Progress: {progress:.2f}% ({self.processed_events}/{self.total_events})")
+                
                 market_event = self.create_market_event(timestamp, data)
                 await self.process_event(market_event)
                 
@@ -326,6 +334,12 @@ class Backtester(multiprocessing.Process):  # or threading.Thread
         recent_data = self.historical_data.iloc[start_idx:current_idx + 1]
     
         return recent_data
+    
+    def update_portfolio_value(self, timestamp):
+        """Update the current portfolio value based on positions and current market price"""
+        current_price = self.historical_data.loc[timestamp, 'close']
+        self.portfolio_value = self.cash + (self.current_position * current_price)
+        return self.portfolio_value
 
     async def execute_trade(self, signal, event):
         try:
@@ -373,29 +387,55 @@ class Backtester(multiprocessing.Process):  # or threading.Thread
     async def handle_market_event(self, event):
         """Handle market update events"""
         recent_data = self.get_recent_data(event['timestamp'])
+        param_mapping = {
+            TrendFollowingStrategy: 'TREND_FOLLOWING_PARAMS',
+            MeanReversionStrategy: 'MEAN_REVERSION_PARAMS',
+            MomentumStrategy: 'MOMENTUM_PARAMS',
+            VolatilityStrategy: 'VOLATILITY_CLUSTERING_PARAMS',
+            StatisticalArbitrageStrategy: 'STATISTICAL_ARBITRAGE_PARAMS',
+            SentimentAnalysisStrategy: 'SENTIMENT_ANALYSIS_PARAMS',
+            BreakoutStrategy: 'BREAKOUT_PARAMS'
+        }
+
     
-        # Initialize strategies if not already done
-        if not hasattr(self, 'strategies'):
-            self.strategies = []
+        # Track active strategy count across all timeframes
+        total_active_strategies = 0
+    
+        for strategy_type in self.strategy_types:
             for timeframe in TimeFrame:
-                strategy = TrendFollowingStrategy(
+                if total_active_strategies >= 4:  # One for each timeframe
+                    break
+                
+                param_name = param_mapping[strategy_type]
+            
+                total_active_strategies += 1  # Increment before printing
+            
+                if self.processed_events % self.progress_update_interval == 0:
+                    print(f"Strategy {strategy_type.__name__} on {timeframe} at {event['timestamp']}")
+                    print(f"Active Strategies: {total_active_strategies}/4")
+            
+                strategy = strategy_type(
                     self.config,
                     time.time(),
                     timeframe,
-                    self.config.ADAPTIVE_PARAMS['TREND_FOLLOWING_PARAMS']
+                    self.config.ADAPTIVE_PARAMS[param_name]
                 )
-                self.strategies.append(strategy)
-    
-        # Generate signals using properly initialized strategy objects
-        for strategy in self.strategies:
-            signal = strategy.generate_signal(recent_data)
-            if signal != 0:
-                signal_event = SignalEvent(
-                    timestamp=event['timestamp'],
-                    symbol=self.config.SYMBOL,
-                    signal=signal
+                signal = strategy.generate_signal(recent_data)
+                if signal != 0:
+                    signal_event = SignalEvent(
+                        timestamp=event['timestamp'],
+                        symbol=self.config.BASE_PARAMS['SYMBOL'],
+                        signal=signal
+                    )
+                    self.events.append(signal_event)
+        for timeframe in TimeFrame:
+            if self._needs_new_strategy(timeframe, recent_data):
+                new_strategy = await self.strategy_manager.request_new_strategy(
+                    timeframe,
+                    recent_data
                 )
-                self.events.append(signal_event)    
+                self.current_strategies[timeframe] = new_strategy
+
     async def handle_signal_event(self, event: SignalEvent):
         order_type = 'MARKET'
         quantity, stop_loss, take_profit = await self.risk_manager.apply_risk_management(

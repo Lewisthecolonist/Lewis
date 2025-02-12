@@ -205,12 +205,15 @@ class Strategy:
 
     
     def _statistical_arbitrage_signal(self, market_data: pd.DataFrame) -> float:
-        # Assuming we're comparing two related assets
-        asset1 = market_data['asset1_close']
-        asset2 = market_data['asset2_close']
+        # Use the available 'close' price as the primary asset
+        primary_asset = market_data['close']
+    
+        # Calculate a synthetic secondary asset or use another available price column
+        # Here using high prices as secondary for demonstration
+        secondary_asset = market_data['high']
     
         # Calculate the spread
-        spread = asset1 - asset2
+        spread = primary_asset - secondary_asset
     
         # Calculate z-score of the spread
         spread_mean = spread.rolling(window=self.parameters.get('lookback_period', 20)).mean()
@@ -220,14 +223,18 @@ class Strategy:
         # Generate signal based on z-score
         threshold = self.parameters.get('z_score_threshold', 2)
         if z_score > threshold:
-            return -1  # Sell asset1, buy asset2
+            return -1  # Sell primary, buy secondary
         elif z_score < -threshold:
-            return 1  # Buy asset1, sell asset2
+            return 1   # Buy primary, sell secondary
         return 0
 
     def _sentiment_analysis_signal(self, market_data: pd.DataFrame) -> float:
-        # Assuming we have a sentiment score in the market_data
-        sentiment_score = market_data['sentiment_score'].iloc[-1]
+        # Create a simple sentiment score based on price movements
+        returns = market_data['close'].pct_change()
+        volume_change = market_data['volume'].pct_change()
+    
+        # Combine price and volume changes for a basic sentiment indicator
+        sentiment_score = (returns * volume_change).mean()
     
         positive_threshold = self.parameters.get('positive_sentiment_threshold', 0.6)
         negative_threshold = self.parameters.get('negative_sentiment_threshold', 0.4)
@@ -237,8 +244,6 @@ class Strategy:
         elif sentiment_score < negative_threshold:
             return -1  # Bearish signal
         return 0
-
-
 
     def calculate_performance(self, trades: List[Dict], initial_capital: float) -> Dict[str, float]:
         if not trades:
@@ -348,9 +353,9 @@ class VolatilityStrategy(Strategy):
     def __init__(self, config: Config, timestamp: float, time_frame: TimeFrame, parameters: Dict[str, Any]):
         super().__init__("Volatility", "A strategy that trades based on market volatility", parameters, ["volatility_clustering"], time_frame)
 
-class PatternRecognitionStrategy(Strategy):
+class BreakoutStrategy(Strategy):
     def __init__(self, config: Config, timestamp: float, time_frame: TimeFrame, parameters: Dict[str, Any]):
-        super().__init__("Pattern Recognition", "A strategy that recognizes and trades on specific price patterns", parameters, ["breakout"], time_frame)
+        super().__init__("Breakout", "A strategy that trades on price breakouts and support/resistance levels", parameters, ["breakout"], time_frame)
 
 class StatisticalArbitrageStrategy(Strategy):
     def __init__(self, config: Config, timestamp: float, time_frame: TimeFrame, parameters: Dict[str, Any]):

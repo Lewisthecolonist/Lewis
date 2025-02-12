@@ -16,7 +16,6 @@ from strategy import (
     MeanReversionStrategy,
     MomentumStrategy,
     VolatilityStrategy,
-    PatternRecognitionStrategy,
     StatisticalArbitrageStrategy,
     SentimentAnalysisStrategy
 )
@@ -153,6 +152,26 @@ class StrategyGenerator:
         except Exception as e:
             self.logger.error(f"AI initialization failed: {e}")
             raise
+    async def generate_initial_strategies(self, market_data):
+        strategies = {timeframe: [] for timeframe in TimeFrame}
+        
+        for timeframe in TimeFrame:
+            for _ in range(self.strategies_per_timeframe):
+                for strategy_type in self.strategy_types:
+                    parameter_sets = self._generate_parameter_variations(
+                        strategy_type,
+                        self.parameter_variation_count
+                    )
+                    
+                    for params in parameter_sets:
+                        strategy = strategy_type(
+                            self.config,
+                            time.time(),
+                            timeframe,
+                            params
+                        )
+                        strategies[timeframe].append(strategy)
+        return strategies
 
     def calculate_market_metrics(self, data: pd.DataFrame) -> MarketMetrics:
         """Calculate comprehensive market metrics"""
@@ -215,7 +234,7 @@ CRITICAL REQUIREMENTS:
 """
         return prompt
 
-    async def generate_strategies(self, market_data: pd.DataFrame) -> Dict[TimeFrame, List[Strategy]]:
+    async def create_targeted_strategy(self, market_data: pd.DataFrame) -> Dict[TimeFrame, List[Strategy]]:
         """Generate strategies with comprehensive validation and error handling"""
         strategies = {timeframe: [] for timeframe in TimeFrame}
         
