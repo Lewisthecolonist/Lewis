@@ -161,3 +161,28 @@
 2025-02-12 01:18:03,528 - root - ERROR - System startup failed: 'Config' object has no attribute 'SYMBOL'
 2025-02-12 01:18:03,529 - __main__ - ERROR - Fatal error: 'Config' object has no attribute 'SYMBOL'
 2025-02-12 01:22:22,007 - strategy_manager - INFO - Strategies initialized successfully
+2025-02-13 00:19:18,993 - strategy_manager - ERROR - Error initializing strategies: 'StrategyManager' object has no attribute 'strategy_generator'
+2025-02-13 00:24:18,516 - __main__ - ERROR - Fatal error: StrategyGenerator.__init__() missing 1 required positional argument: 'config'
+2025-02-13 00:25:31,453 - __main__ - ERROR - Fatal error: StrategyFactory.__init__() missing 3 required positional arguments: 'market_maker', 'config', and 'config_file_path'
+2025-02-13 00:29:49,131 - strategy_manager - ERROR - Error initializing strategies: 'StrategyFactory' object has no attribute 'save_strategy'
+2025-02-13 00:31:57,127 - strategy_manager - ERROR - Error initializing strategies: StrategyFactory.save_strategy_config() takes 1 positional argument but 2 were given
+2025-02-13 00:35:39,420 - strategy_manager - ERROR - Error initializing strategies: 'MomentumStrategy' object has no attribute 'to_dict'
+2025-02-13 00:59:35,662 - strategy_manager - ERROR - Error initializing strategies: keys must be str, int, float, bool or None, not tuple
+2025-02-13 02:20:40,085 - strategy_manager - ERROR - Error initializing strategies: StrategyFactory.save_strategy() missing 1 required positional argument: 'strategy'
+2025-02-13 02:53:38,665 - strategy_manager - ERROR - Error initializing strategies: object NoneType can't be used in 'await' expression
+2025-02-13 03:04:18,236 - strategy_manager - ERROR - Error initializing strategies: object NoneType can't be used in 'await' expression
+2025-02-13 03:12:17,990 - strategy_manager - ERROR - Error initializing strategies: StrategyFactory.update_strategy() missing 2 required positional arguments: 'strategy_name' and 'strategy'
+2025-02-13 03:22:07,194 - strategy_manager - ERROR - Error initializing strategies: StrategyGenerator.generate_strategies() takes 2 positional arguments but 3 were given
+2025-02-13 03:33:08,869 - strategy_manager - ERROR - Error initializing strategies: 'list' object has no attribute 'values'
+2025-02-13 04:04:25,590 - strategy_manager - ERROR - Error initializing strategies: 'dict' object has no attribute 'append'
+2025-03-04 01:50:22,814 - strategy_generator - ERROR - Market metrics calculation failed: 'StrategyGenerator' object has no attribute '_calculate_rsi'
+2025-03-04 01:50:22,817 - strategy_manager - ERROR - Error initializing strategies: 'StrategyGenerator' object has no attribute '_calculate_rsi'
+2025-03-04 01:54:41,584 - strategy_manager - ERROR - Error initializing strategies: 'StrategyGenerator' object has no attribute 'analyze_volume_profile'
+2025-03-04 02:00:25,568 - strategy_manager - ERROR - Error initializing strategies: 'StrategyGenerator' object has no attribute 'identify_support_resistance_levels'
+2025-03-04 02:07:52,709 - strategy_manager - ERROR - Error initializing strategies: Invalid format specifier ' value1,
+        "param2": value2
+    ' for object of type 'str'
+2025-03-04 02:26:31,259 - strategy_manager - ERROR - Error initializing strategies: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-03-04 02:40:48,536 - strategy_manager - ERROR - Error initializing strategies: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-03-04 02:57:09,205 - strategy_manager - ERROR - Error initializing strategies: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2025-03-04 03:10:05,373 - strategy_manager - ERROR - Error initializing strategies: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.

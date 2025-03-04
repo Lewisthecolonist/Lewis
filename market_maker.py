@@ -951,12 +951,6 @@ class MarketMaker:
             signal = strategy.generate_signal(event.market_data)
             if signal != 0:
                 self.events.append(SignalEvent(event.timestamp, self.config.SYMBOL, signal))
-
-        for timeframe in TimeFrame:
-            market_data = await self.get_recent_data()
-            if self._needs_new_strategy(timeframe, market_data):
-                new_strategy = await self.strategy_manager.request_new_strategy(timeframe, market_data)
-            self.current_strategies[timeframe] = new_strategy
         
         await self.update_adaptive_parameters()
 

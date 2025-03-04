@@ -5,10 +5,11 @@ from strategy import Strategy
 from typing import Dict, Callable
 import pandas as pd
 from strategy import TimeFrame
+from config import Config
+import aiofiles
 
 class StrategyFactory:
-    def __init__(self, market_maker, config, config_file_path):
-        self.market_maker = market_maker
+    def __init__(self, config= Config, config_file_path= 'strategies.json'):
         self.config = config
         self.strategy_generator = StrategyGenerator(config)
         self.strategies = {}
@@ -32,32 +33,34 @@ class StrategyFactory:
             print(f"Error loading strategy config from {self.config_file_path}. Creating new empty configuration.")
             return {}
 
-
-    def save_strategy_config(self):
-        serializable_strategies = {
-            name: strategy.to_dict() for name, strategy in self.strategies.items()
-        }
-        with open(self.config_file_path, 'w') as f:
-            json.dump(serializable_strategies, f, indent=4)
-
-    async def generate_and_update_strategies(self):
-        market_data = await self.market_maker.get_recent_data()
-        new_strategies = self.strategy_generator.generate_strategies(market_data)
-        
-        for time_frame, strategies in new_strategies.items():
-            for strategy in strategies:
-                self.update_strategy(strategy.name, strategy)
-
-    def update_strategy(self, strategy_name: str, strategy: Strategy):
-        # Create immutable key using tuple
-        strategy_key = (
-            strategy_name,
-            strategy.time_frame,
-            frozenset(strategy.parameters.items())  # Convert dict to frozenset
-        )
+    async def update_strategy(self, strategy_name: str, strategy: Strategy):
+        # Create string key
+        strategy_key = f"{strategy_name}_{strategy.time_frame}_{hash(frozenset(strategy.parameters.items()))}"
+    
+        # Store in memory
         self.strategies[strategy_key] = strategy
         self.signal_methods[strategy_key] = self.create_signal_method(strategy)
-        self.save_strategy_config()
+    
+        # Load current strategies
+        try:
+            async with aiofiles.open(self.config_file_path, 'r') as f:
+                content = await f.read()
+                existing_strategies = json.loads(content) if content else {}
+        except FileNotFoundError:
+            existing_strategies = {}
+    
+        # Add new strategy
+        existing_strategies[strategy_key] = {
+            'name': strategy.name,
+            'time_frame': strategy.time_frame.value,
+            'parameters': dict(strategy.parameters),
+            'favored_patterns': list(strategy.favored_patterns)
+        }
+    
+        # Save all strategies
+        async with aiofiles.open(self.config_file_path, 'w') as f:
+            await f.write(json.dumps(existing_strategies, indent=4))
+
     def create_signal_method(self, strategy: Strategy) -> Callable:
         def signal_method(market_data: pd.DataFrame) -> float:
             return strategy.generate_signal(market_data)
@@ -104,3 +107,29 @@ class StrategyFactory:
             TimeFrame.SEASONAL_TERM: {'interval': 'ME', 'lookback': 1460}
         }
         return {**base_params, **timeframe_specific[timeframe]}
+    
+    async def save_strategy(self, strategy: Strategy):
+        # Create unique string key
+        strategy_key = f"{strategy.name}_{strategy.time_frame}_{hash(frozenset(strategy.parameters.items()))}"
+    
+        # Store strategy and its signal method
+        self.strategies[strategy_key] = strategy
+        self.signal_methods[strategy_key] = self.create_signal_method(strategy)
+    
+        # Convert to serializable format
+        serializable_strategies = {
+            key: {
+                'name': strat.name,
+                'time_frame': strat.time_frame.value,
+                'parameters': dict(strat.parameters),
+                'favored_patterns': list(strat.favored_patterns)
+            }
+            for key, strat in self.strategies.items()
+        }
+    
+        # Save to file asynchronously
+        async with aiofiles.open(self.config_file_path, 'w') as f:
+            await f.write(json.dumps(serializable_strategies, indent=4))
+
+
+

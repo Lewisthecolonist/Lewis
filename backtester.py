@@ -428,13 +428,6 @@ class Backtester(multiprocessing.Process):  # or threading.Thread
                         signal=signal
                     )
                     self.events.append(signal_event)
-        for timeframe in TimeFrame:
-            if self._needs_new_strategy(timeframe, recent_data):
-                new_strategy = await self.strategy_manager.request_new_strategy(
-                    timeframe,
-                    recent_data
-                )
-                self.current_strategies[timeframe] = new_strategy
 
     async def handle_signal_event(self, event: SignalEvent):
         order_type = 'MARKET'

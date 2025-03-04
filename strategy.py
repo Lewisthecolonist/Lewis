@@ -336,6 +336,16 @@ class Strategy:
     
     def update_performance(self, new_performance: Dict[str, float]):
         self.performance.update(new_performance)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "name": self.name,
+            "description": self.description,
+            "parameters": self.parameters,
+            "favored_patterns": self.favored_patterns,
+            "time_frame": self.time_frame.value,
+            "performance": self.performance
+        }
 
 class TrendFollowingStrategy(Strategy):
     def __init__(self, config: Config, timestamp: float, time_frame: TimeFrame, parameters: Dict[str, Any]):

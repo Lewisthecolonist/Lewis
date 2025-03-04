@@ -2,6 +2,7 @@ from typing import Dict, List, Tuple
 from strategy import Strategy, TimeFrame
 import pandas as pd
 import numpy as np
+import os
 from strategy_selector import StrategySelector
 from datetime import datetime, timedelta
 from strategy_generator import StrategyGenerator
@@ -10,6 +11,9 @@ import asyncio
 import logging
 from strategy import Strategy
 from risk_manager import RiskManager
+import google.generativeai as genai
+from strategy_factory import StrategyFactory
+
 
 VALID_STRATEGY_PARAMETERS = {
     'trend_following': [
@@ -89,6 +93,8 @@ class StrategyManager:
         self.strategies = {tf: {} for tf in TimeFrame}
         self.active_strategies = {}
         self.strategy_selector = StrategySelector(config)
+        self.strategy_generator = StrategyGenerator(config)
+        self.strategy_factory = StrategyFactory()
         self.config = config
         self.protection_period = timedelta(hours=1)
         self.api_call_manager = APICallManager()
@@ -108,45 +114,24 @@ class StrategyManager:
         }
 
     async def initialize_strategies(self, strategy_generator: StrategyGenerator, market_data: pd.DataFrame):
-        if await self.api_call_manager.can_make_call():
-            try:
-                # Initialize with list-based storage instead of dictionaries
-                self.strategies = {tf: [] for tf in TimeFrame}
-        
-                # Generate strategies
-                initial_strategies = await self.strategy_generator.generate_initial_strategies(market_data)
-        
-                # Save to strategy factory config
-                for timeframe, strategies in initial_strategies.items():
-                    for strategy in strategies:
-                        await self.strategy_factory.save_strategy(strategy)
-                        self.strategies[timeframe][strategy.name] = strategy
-        
-                self.logger.info("Strategies initialized successfully")
-        
-            except Exception as e:
-                self.logger.error(f"Error initializing strategies: {str(e)}")
-                self.strategies = {tf: [] for tf in TimeFrame}
-
-    async def request_new_strategy(self, timeframe, market_conditions, is_backtesting=False):
-        # Create single strategy for specific timeframe and conditions
-        if is_backtesting:
-            strategy = await self.strategy_generator.create_targeted_strategy(
-                timeframe, 
-                market_conditions
-            )
-        else:
-            # For live trading, optimize before deployment
-            strategy = await self.strategy_generator.create_targeted_strategy(
-                timeframe, 
-                market_conditions
-            )
-            strategy = await self.strategy_optimizer.optimize_strategy(strategy)
+        try:
+            # Generate diverse strategies for each timeframe
+            for timeframe in TimeFrame:
+                print(f"Generating strategies for {timeframe}")
+                strategies = await strategy_generator.generate_strategies(market_data)
+                print(f"Generated {len(strategies[timeframe])} strategies for {timeframe}")
             
-        await self.strategy_factory.save_strategy(strategy)
-        self.strategies[timeframe][strategy.name] = strategy
-        self.current_strategies[timeframe] = strategy
-        return strategy
+                # Store and save each strategy
+                for strategy in strategies[timeframe]:
+                    strategy_key = f"{strategy.name}_{strategy.time_frame}_{hash(frozenset(strategy.parameters.items()))}"
+                    print(f"Saving strategy: {strategy_key}")
+                    await self.strategy_factory.update_strategy(strategy_key, strategy)
+                    self.strategies[timeframe][strategy_key] = strategy
+            
+            print(f"Total strategies created: {sum(len(strats) for strats in self.strategies.values())}")
+        
+        except Exception as e:
+            self.logger.error(f"Error initializing strategies: {str(e)}")
 
     def add_strategy(self, strategy: Strategy):
         try:

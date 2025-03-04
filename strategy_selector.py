@@ -6,6 +6,7 @@ from strategy import Strategy, TimeFrame
 import prophet as Prophet
 from functools import lru_cache
 
+
 class StrategySelector:
     def __init__(self, config):
         self.config = config
